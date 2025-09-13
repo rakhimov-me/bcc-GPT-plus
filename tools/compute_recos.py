@@ -190,8 +190,22 @@ for _, r in clients.iterrows():
     prod, _ = ranked[0]
     push = gen_push(prod, r, dict(ranked))
     rows.append({"client_code": int(r["client_code"]), "product": prod, "push_notification": push})
-    dbg.append({"client_code": int(r["client_code"]), **{f"rank{i+1}": p for i,(p,_) in enumerate(ranked[:4])}, **{f"score_{p}": s for p,s in ranked}})
+    dbg.append({"client_code": int(r["client_code"]), "name": r["name"], **{f"rank{i+1}": p for i,(p,_) in enumerate(ranked[:4])}, **{f"score_{p}": s for p,s in ranked}})
 
-pd.DataFrame(rows).sort_values("client_code").to_csv("recommendations.csv", index=False)
-pd.DataFrame(dbg).sort_values("client_code").to_csv("top4_debug.csv", index=False)
+pd.DataFrame(rows).sort_values("client_code").to_csv(
+    "recommendations.csv",
+    index=False,
+    encoding="utf-8-sig",
+    sep=";",
+    decimal=",",
+    float_format="%.2f"
+)
+pd.DataFrame(dbg).sort_values("client_code").to_csv(
+    "top4_debug.csv",
+    index=False,
+    encoding="utf-8-sig",
+    sep=";",
+    decimal=",",
+    float_format="%.2f"
+)
 print("Done: recommendations.csv, top4_debug.csv")

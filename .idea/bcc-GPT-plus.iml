@@ -5,6 +5,10 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/tools/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/tools/.venv/Include" />
+      <excludeFolder url="file://$MODULE_DIR$/tools/.venv/Lib" />
+      <excludeFolder url="file://$MODULE_DIR$/tools/.venv/Scripts" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
