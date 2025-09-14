@@ -13,7 +13,6 @@ pip install pandas numpy
 
 ## Запуск
 
-Посчитать рекомендации для всех клиентов:
 python tools/compute_recos.py
 
 Результаты:
