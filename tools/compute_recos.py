@@ -195,3 +195,43 @@ for _, r in clients.iterrows():
 pd.DataFrame(rows).sort_values("client_code").to_csv("recommendations.csv", index=False)
 pd.DataFrame(dbg).sort_values("client_code").to_csv("top4_debug.csv", index=False)
 print("Done: recommendations.csv, top4_debug.csv")
+
+# --- автo-открытие файла (для Windows/macOS/Linux) ---
+import os, sys, subprocess
+
+def _open_path(p: str):
+    try:
+        if sys.platform.startswith("win"):
+            # откроет в приложении по умолчанию (обычно Excel)
+            os.startfile(os.path.abspath(p))  # type: ignore[attr-defined]
+            # если хочешь открыть Проводник с выделенным файлом — раскомментируй:
+            # subprocess.Popen(["explorer", "/select,", os.path.abspath(p)])
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", p])
+        else:
+            subprocess.Popen(["xdg-open", p])
+    except Exception as e:
+        print(f"Не удалось автоматически открыть файл {p}: {e}")
+
+# --- сохранение в CSV (Excel-friendly) ---
+pd.DataFrame(rows).sort_values("client_code").to_csv(
+    "recommendations.csv",
+    index=False,
+    encoding="utf-8-sig",
+    sep=";",
+    decimal=",",
+    float_format="%.2f"
+)
+pd.DataFrame(dbg).sort_values("client_code").to_csv(
+    "top4_debug.csv",
+    index=False,
+    encoding="utf-8-sig",
+    sep=";",
+    decimal=",",
+    float_format="%.2f"
+)
+
+# <— ДОБАВЬ ЭТО:
+_open_path("recommendations.csv")
+
+print("Done: recommendations.csv, top4_debug.csv")
