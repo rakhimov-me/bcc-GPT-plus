@@ -15,6 +15,8 @@ pip install pandas numpy
 
 python tools/compute_recos.py
 
+
+
 Результаты:
 recommendations.csv — итоговые рекомендации
 top4_debug.csv — топ-4 продуктов и отладочная информация
