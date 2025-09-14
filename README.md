@@ -2,16 +2,16 @@ bcc-GPT-plus
 
 Decentrathon 4.0
 
-Требования
+## Требования
 
 Python 3.10+
 Библиотеки: pandas, numpy
 
-Установка
+## Установка
 
 pip install pandas numpy
 
-Запуск
+## Запуск
 
 Посчитать рекомендации для всех клиентов:
 python tools/compute_recos.py
