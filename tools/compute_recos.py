@@ -185,13 +185,33 @@ def gen_push(product, row, benefits):
 # ---------- прогон ----------
 rows, dbg = [], []
 for _, r in clients.iterrows():
-    bmap = {k:max(0.0,float(v)) for k,v in estimate(r).items()}
+    bmap = {k: max(0.0, float(v)) for k, v in estimate(r).items()}
     ranked = sorted(bmap.items(), key=lambda kv: kv[1], reverse=True)
+
+    # победитель для recommendations.csv
     prod, _ = ranked[0]
     push = gen_push(prod, r, dict(ranked))
-    rows.append({"client_code": int(r["client_code"]), "product": prod, "push_notification": push})
-    dbg.append({"client_code": int(r["client_code"]), **{f"rank{i+1}": p for i,(p,_) in enumerate(ranked[:4])}, **{f"score_{p}": s for p,s in ranked}})
+    rows.append({
+        "client_code": int(r["client_code"]),
+        "product": prod,
+        "push_notification": push
+    })
 
+    # топ-4 + выгоды в деньгах по каждому
+    top4 = ranked[:4]
+    dbg_entry = {
+        "client_code": int(r["client_code"])
+    }
+    for i, (p, s) in enumerate(top4, start=1):
+        dbg_entry[f"rank{i}"] = p
+        dbg_entry[f"rank{i}_benefit"] = round(float(s), 2)
+
+    # также добавим все «сырьевые» score_* как и раньше (полезно для анализа)
+    dbg_entry.update({f"score_{p}": float(s) for p, s in ranked})
+
+    dbg.append(dbg_entry)
+
+# сохранение как раньше
 pd.DataFrame(rows).sort_values("client_code").to_csv("recommendations.csv", index=False)
 pd.DataFrame(dbg).sort_values("client_code").to_csv("top4_debug.csv", index=False)
 print("Done: recommendations.csv, top4_debug.csv")
